@@ -1,13 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  ) {}
+
   users: {
     id: number;
     name: string;
     email: string;
     gender: string;
     isMarried: boolean;
+    password: string;
   }[] = [
     {
       id: 1,
@@ -15,6 +27,7 @@ export class UsersService {
       email: 'john@example.com',
       gender: 'male',
       isMarried: false,
+      password: '123456',
     },
     {
       id: 2,
@@ -22,6 +35,7 @@ export class UsersService {
       email: 'jane@example.com',
       gender: 'female',
       isMarried: true,
+      password: '123456',
     },
     {
       id: 3,
@@ -29,6 +43,7 @@ export class UsersService {
       email: 'jim@example.com',
       gender: 'male',
       isMarried: false,
+      password: '123456',
     },
     {
       id: 4,
@@ -36,11 +51,16 @@ export class UsersService {
       email: 'jill@example.com',
       gender: 'female',
       isMarried: true,
+      password: '123456',
     },
   ];
 
-  getAllUsers(limit: number, page: number) {
-    return this.users.slice((page - 1) * limit, page * limit);
+  getAllUsers() {
+    if (!this.authService.isAuthenticated) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    return this.users;
   }
 
   getUserById(id: number) {
@@ -54,6 +74,7 @@ export class UsersService {
     email: string;
     gender: string;
     isMarried: boolean;
+    password: string;
   }) {
     this.users.push(user);
   }

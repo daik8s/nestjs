@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  db_server_nestjs:
+    image: "postgres:14.0"
+    ports:
+      - "5438:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: nestjs
+      POSTGRES_PASSWORD: nestjs
+      POSTGRES_DB: nestjs
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data
