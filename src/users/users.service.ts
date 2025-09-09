@@ -1,81 +1,32 @@
-import {
-  forwardRef,
-  Inject,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { Users } from './users.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
+    @InjectRepository(Users)
+    private readonly usersRepository: Repository<Users>,
   ) {}
 
-  users: {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    isMarried: boolean;
-    password: string;
-  }[] = [
-    {
-      id: 1,
-      name: 'John',
-      email: 'john@example.com',
-      gender: 'male',
-      isMarried: false,
-      password: '123456',
-    },
-    {
-      id: 2,
-      name: 'Jane',
-      email: 'jane@example.com',
-      gender: 'female',
-      isMarried: true,
-      password: '123456',
-    },
-    {
-      id: 3,
-      name: 'Jim',
-      email: 'jim@example.com',
-      gender: 'male',
-      isMarried: false,
-      password: '123456',
-    },
-    {
-      id: 4,
-      name: 'Jill',
-      email: 'jill@example.com',
-      gender: 'female',
-      isMarried: true,
-      password: '123456',
-    },
-  ];
-
   getAllUsers() {
-    if (!this.authService.isAuthenticated) {
-      throw new UnauthorizedException('Unauthorized');
+    return this.usersRepository.find();
+  }
+
+  public async createUser(userDto: CreateUserDto) {
+    // Validate if a user exist with the give email
+    const user = await this.usersRepository.findOne({
+      where: { email: userDto.email },
+    });
+    // Handle the error / exception
+    if (user) {
+      throw new BadRequestException('User already exists');
     }
-
-    return this.users;
-  }
-
-  getUserById(id: number) {
-    const user = this.users.find((user) => user.id === id);
-    return user;
-  }
-
-  createUser(user: {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    isMarried: boolean;
-    password: string;
-  }) {
-    this.users.push(user);
+    // Create that user
+    let newUser = this.usersRepository.create(userDto);
+    newUser = await this.usersRepository.save(newUser);
+    return newUser;
   }
 }

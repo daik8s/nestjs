@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -22,20 +22,5 @@ export class TweetService {
     },
   ];
 
-  getTweets(userid: number) {
-    const user = this.usersService.getUserById(userid);
-    console.log(user);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    const tweets = this.tweets.filter((tweet) => tweet.userid === userid);
-    const response = tweets.map((tweet) => ({
-      text: tweet.text,
-      date: tweet.date,
-      name: user.name,
-    }));
-
-    return response;
-  }
+  getTweets() {}
 }
