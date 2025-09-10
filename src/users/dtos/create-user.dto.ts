@@ -1,10 +1,12 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { CreateProfileDto } from 'src/profile/dtos/create-profile.dto';
 
 export class CreateUserDto {
   @IsEmail()
@@ -22,4 +24,7 @@ export class CreateUserDto {
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
   @MaxLength(100, { message: 'Password must be less than 100 characters long' })
   password: string;
+
+  @IsOptional()
+  profile: CreateProfileDto;
 }
