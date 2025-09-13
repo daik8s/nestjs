@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Users } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { Profile } from 'src/profile/profile.entity';
+import { Profile } from '../profile/profile.entity';
 
 @Injectable()
 export class UsersService {
@@ -15,8 +15,10 @@ export class UsersService {
     private readonly profileRepository: Repository<Profile>,
   ) {}
 
-  getAllUsers() {
-    return this.usersRepository.find();
+  public getAllUsers() {
+    return this.usersRepository.find({
+      relations: ['profile'],
+    });
   }
 
   public async createUser(userDto: CreateUserDto) {
@@ -24,5 +26,20 @@ export class UsersService {
     const user = this.usersRepository.create(userDto);
 
     return await this.usersRepository.save(user);
+  }
+
+  public async deleteUser(id: string) {
+    await this.usersRepository.delete(id);
+
+    return {
+      deleted: true,
+    };
+  }
+
+  public async findUserById(id: string) {
+    return await this.usersRepository.findOne({
+      where: { id },
+      relations: ['profile'],
+    });
   }
 }

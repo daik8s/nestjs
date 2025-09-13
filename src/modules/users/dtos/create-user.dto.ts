@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { CreateProfileDto } from 'src/profile/dtos/create-profile.dto';
+import { CreateProfileDto } from '../../profile/dtos/create-profile.dto';
 
 export class CreateUserDto {
   @IsEmail()

@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { TweetModule } from './tweet/tweet.module';
-import { AuthModule } from './auth/auth.module';
-import { ProfileModule } from './profile/profile.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { TweetModule } from './modules/tweet/tweet.module';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
