@@ -5,8 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Users } from '../users/users.entity';
+import { Hashtag } from '../hashtag/hashtag.entity';
 
 @Entity()
 export class Tweet {
@@ -33,4 +36,8 @@ export class Tweet {
 
   @ManyToOne(() => Users, (user) => user.tweets, { eager: true })
   user: Users;
+
+  @ManyToMany(() => Hashtag)
+  @JoinTable()
+  hashtags: Hashtag[];
 }
