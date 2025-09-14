@@ -6,7 +6,7 @@ export class Hashtag {
   id: number;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     unique: true,
   })
