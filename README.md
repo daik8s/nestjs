@@ -27,6 +27,15 @@ This project is a simple NestJS application that demonstrates a basic authentica
 - `POST /users` - Create a new user.
 - `PATCH /users/:id` - Update user information.
 
+## Code Quality
+
+This project includes:
+
+- **Husky**: Git hooks for code quality
+- **lint-staged**: Runs ESLint and Prettier on staged files before commits
+- **ESLint**: Code linting with TypeScript support
+- **Prettier**: Code formatting
+
 ## Notes
 
 - The authentication is in-memory and for demonstration purposes only.
