@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { CreateHashtagDto } from './dtos/create-hashtag.dto';
 import { HashtagService } from './hashtag.service';
 
-@Controller("hashtag")
+@Controller('hashtag')
 export class HashtagController {
   constructor(private readonly hashtagService: HashtagService) {}
 
